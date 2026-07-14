@@ -1,0 +1,353 @@
+# 🧠 DEVLOG AI
+
+### A Personal Coding Journal with AI-Powered Refinement
+
+---
+
+## ✨ What is DEVLOG AI?
+
+DEVLOG AI is a full-stack web application that helps developers transform messy daily coding notes into structured, searchable, and AI-refined knowledge.
+
+---
+
+## ⭐ Key Highlights
+
+- 🤖 **AI-Powered Journaling** – Convert notes to Markdown, improve writing, generate tags, and create summaries using LLMs.
+- 🔐 **Custom Authentication System** – JWT-based auth with a self-implemented Google OAuth flow (no external auth providers).
+- 🖼 **Rich Journal Media Support** – Upload and embed multiple images anywhere inside journal entries using Cloudinary.
+- 🔎 **Powerful Search & Organization** – Full-text search across titles, content, and tags.
+- 📊 **Admin Analytics Dashboard** – Monitor platform activity, users, tags, entries, and API usage through charts.
+- 📜 **API Request Logging System** – Every API request is recorded for monitoring and debugging.
+- 🔗 **Secure Entry Sharing** – Public or restricted access links with backend-level permission validation.
+- 📈 **Developer Productivity Insights** – GitHub-style heatmap and streak tracking for coding activity.
+
+## 🔗 Live Demo
+
+https://devlogai-s18.vercel.app/
+
+## 🧪 Demo Access
+
+You may create a temporary account, or use:
+
+Email: demo@devlog.ai  
+Password: demo123
+
+## 🧰 Built With
+
+Next.js · NestJS · PostgreSQL · TypeORM · Groq API · Cloudinary · JWT Auth · Google OAuth
+
+---
+
+It’s designed around a simple loop:
+
+> Capture → Refine → Organize → Reuse
+
+Instead of scattered notes across tools, DEVLOG AI turns:
+
+- Raw debugging logs → structured Markdown
+- Rough thoughts → improved writing
+- Daily entries → searchable knowledge base
+- Logs → exportable summaries
+
+This project focuses on clean architecture, AI integration, and production-style deployment.
+
+---
+
+## 📸 Screenshots
+
+### Admin Analytics Panel
+
+![Admin Panel](./readme-assets/admindashboard.png)
+
+### Journal Editor
+
+![Editor](./readme-assets/editjournal.png)
+
+### AI Summary
+
+![AI Summary](./readme-assets/summary.png)
+
+### Sharing Controls
+
+![Sharing](./readme-assets/sharejournal.png)
+
+---
+
+## 🏗 System Architecture
+
+### High-Level Flow
+
+1. **Next.js (App Router)** handles UI rendering and client interactions.
+2. API requests are sent to a **NestJS backend (REST API)**.
+3. Backend:
+   - Handles authentication & validation
+   - Supports **JWT authentication and Google OAuth**
+   - Interacts with PostgreSQL via TypeORM
+   - Calls AI APIs for summarization and writing assistance
+   - Tracks **every API request through a centralized logging system**
+   - Exposes an **admin analytics panel** for monitoring platform activity
+4. Media uploads are stored and optimized using **Cloudinary**.
+5. Journal images are stored as references and can be embedded anywhere within entries.
+6. PDF exports are generated client-side (HTML → PDF pipeline).
+
+### 🔐 Authorization & Sharing Model
+
+- Public access links generated per entry
+- AI summaries gated behind authenticated sessions
+- Email-based access control stored in PostgreSQL
+- Backend-level permission enforcement (unauthorized users cannot fetch restricted entries)
+- Resource-level access validation on every request
+
+---
+
+## 🚀 Core Features
+
+### 📝 Journal Engine
+
+- Create, edit, delete journal entries
+- Markdown + plain-text writing support
+- Live preview (split view on desktop)
+- Full-text search across:
+  - Title
+  - Content
+  - Tags
+- GitHub-style activity heatmap
+- Streak tracking logic
+- **Dynamic page titles and favicons based on the current journal entry**
+
+---
+
+### 🤖 AI Features (Backend-Proxied)
+
+All AI requests are routed through the backend to:
+
+- Protect API keys
+- Control usage
+- Maintain clean separation of concerns
+
+Features include:
+
+- **Convert to Markdown**
+  - Plain text → structured Markdown
+  - Side-by-side comparison modal
+
+- **Improve Writing**
+  - Grammar + clarity enhancement
+
+- **Auto Tag Generation**
+  - Context-aware tag suggestions
+
+- **Entry Summarization**
+  - AI-generated summary per entry
+  - Exportable as PDF
+
+---
+
+### 🖼 Media & Export
+
+- Upload **multiple images per journal entry**
+- Images can be **embedded anywhere inside the content**
+- Media stored and optimized via **Cloudinary CDN**
+- Entry → HTML → PDF export
+- Summary → downloadable PDF
+- Persistent light/dark theme
+
+---
+
+### 📊 Admin & Analytics
+
+DEVLOG AI includes a built-in admin monitoring dashboard.
+
+Features:
+
+- View total users and platform activity
+- Monitor daily journal entry creation
+- Track active users
+- Analyze tag usage across entries
+- Inspect API request logs
+- View system statistics through charts
+
+All API requests are automatically logged in the backend database, enabling platform monitoring and debugging.
+
+---
+
+## 🧱 Tech Stack
+
+### Frontend
+- Next.js (App Router)
+- React
+- Tailwind CSS
+- shadcn/ui
+
+### Backend
+- NestJS
+- TypeORM
+- PostgreSQL
+- JWT Authentication
+- **Custom Google OAuth integration**
+
+### AI & Media
+
+- Groq API
+- Cloudinary
+
+---
+
+## 🗄 Database Design
+
+Relational schema designed for scalability and future collaboration features.
+
+Core tables:
+
+- `authentication`
+- `journal`
+- `logs`
+
+The logging table records every API request along with metadata for monitoring and analytics.
+---
+
+## 🔐 Security & Engineering Decisions
+
+- JWT-based authentication
+- Password hashing with bcrypt
+- Server-side AI API key protection
+- Environment-based configuration
+- DTO validation via NestJS pipes
+- Clean separation: controller → service → repository layers
+- Centralized API request logging for monitoring and debugging
+
+---
+
+## 📊 Observability & Monitoring
+
+DEVLOG AI includes basic platform observability to monitor system activity and debug issues.
+
+Features:
+
+- **API Request Logging**  
+  Every API request is recorded in the database along with metadata.
+
+- **Admin Analytics Dashboard**  
+  Admins can monitor:
+  - Total users
+  - Active users
+  - Entry creation per day
+  - Tag usage
+  - Platform activity trends
+
+- **Debugging Support**  
+  Logs help trace backend operations and diagnose issues without relying on server console logs.
+
+This system provides visibility into application behavior and user activity, similar to basic observability systems used in production platforms.
+
+---
+
+## ⚡ Performance Considerations
+
+- Indexed Postgres queries for search
+- Efficient relational joins (TypeORM)
+- Cloudinary CDN optimization
+- Client-side rendering optimizations with Next.js App Router
+- Minimized unnecessary re-renders in React components
+
+---
+
+## 📦 Local Development
+
+### 1️⃣ Clone
+
+```bash
+git clone https://github.com/tanmay-s18/Devlog_AI
+cd Devlog_AI
+```
+
+### 2️⃣ Environment Variables
+
+Create .env in both client/ and server/.
+
+#### client/.env
+
+```
+NEXT_PUBLIC_CLOUDINARY_URL=your_cloudinary_url
+```
+
+#### server/.env
+
+```
+DATABASE_URL=postgres://user:pass@host:port/dbname
+JWT_SECRET=your_secret
+POSTGRES_URL = postgres://user_example:password_example@localhost:5432/database_example
+CLOUDINARY_CLOUD_NAME = name_example_1234567890
+CLOUDINARY_API_KEY = key_example_1234567890
+CLOUDINARY_API_SECRET = secret_example_1234567890
+GOOGLE_CLIENT_ID=your_google_client_id_here
+GOOGLE_CLIENT_SECRET=your_google_client_secret_here
+GROQ_API_KEY=your_groq_api_key_here
+NODE_ENV=development
+ADMIN_EMAIL=admin_email
+ADMIN_PASSWORD=admin_password
+ADMIN_JWT_SECRET=admin_jwt_secret_example_1234567890
+```
+
+### 3️⃣ Run Locally
+
+```
+# client
+npm install
+npm run dev
+
+# server
+npm install
+npm start
+```
+
+Visit → http://localhost:3000
+
+## 📈 Roadmap
+
+- Role-based permission tiers (viewer/editor)
+- AI-powered blog draft generation
+- Prompt customization panel
+- CI/CD integration
+- Automated testing coverage
+
+---
+
+## 📦 Deployment
+
+- **Frontend:** Vercel
+- **Backend:** Render
+- **Database:** PostgreSQL (Render)
+- **Media Storage:** Cloudinary CDN
+
+---
+
+## 🧠 Engineering Highlights
+
+- Modular **NestJS backend architecture**
+- Custom **Google OAuth implementation (without third-party auth providers)**
+- Resource-level authorization for shared entries
+- Centralized **API request logging system**
+- Built-in **admin analytics dashboard**
+- AI request proxying for API key protection
+- Image storage with **Cloudinary CDN integration**
+- Media-aware relational schema supporting **multiple images per journal**
+- Deployment split: **Vercel (frontend) + Render (backend)**
+
+---
+
+## 🎯 Why This Project Matters
+
+DEVLOG AI demonstrates:
+
+- End-to-end full-stack system design
+- Production-style deployment architecture
+- Backend authorization & resource-level access control
+- Secure AI integration via server proxy
+- Relational data modeling with scalability in mind
+
+It reflects a product-first engineering approach rather than a tutorial-style CRUD application.
+
+---
+
+© 2026 Devlog AI. All rights reserved.

@@ -1,0 +1,81 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { JournalEntryForm } from "@/components/journal-entry-form";
+import type { JournalEntry } from "@/lib/types";
+import { useRouter } from "next/navigation";
+import { use } from "react";
+import axios from "axios";
+
+export default function EditEntry({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = use(params);
+
+  const router = useRouter();
+  const [entry, setEntry] = useState<JournalEntry | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchEntry();
+  }, [id]);
+
+  const fetchEntry = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/journal/${id}`,
+        {
+          withCredentials: true,
+        },
+      );
+      const data = await response.data;
+      // change the format of the data to match the JournalEntry type
+      const EntryCorrectFormat: JournalEntry = {
+        id: data.uuid,
+        userId: data.userId,
+        title: data.journal_title,
+        content: data.journal_content,
+        media: data.media || [],
+        tags: data.journal_tags,
+        createdAt: data.created_at,
+        updatedAt: data.updated_at,
+        image_url: data.image_url,
+        isPublic: data.isPublic,
+        allowedEmails: data.allowed_emails || [],
+      };
+
+      setEntry(EntryCorrectFormat);
+    } catch (error) {
+      console.error("Error fetching entry:", error);
+      router.push("/dashboard");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-slate-600 dark:text-slate-300">Loading entry...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!entry) {
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            Entry not found
+          </h1>
+        </div>
+      </div>
+    );
+  }
+  return <JournalEntryForm entry={entry} />;
+}
